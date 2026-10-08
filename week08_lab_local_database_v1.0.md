@@ -56,36 +56,195 @@
 บันทึกโค้ดที่ Gemini ตอบกลับมาที่ด้านล่าง
 
 บันทึกผลลัพธ์ที่นี่
-1.<img width="535" height="765" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 30 34" src="https://github.com/user-attachments/assets/3e1356aa-3655-45c5-8cf1-9637086b072a" />
 
-2.<img width="539" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 30 50" src="https://github.com/user-attachments/assets/8046f622-64c6-49cc-98e3-38506415d44b" />
+import 'package:drift/drift.dart';
 
-3.<img width="541" height="768" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 18" src="https://github.com/user-attachments/assets/7a97d254-fc95-449b-bacd-f3309dc10564" />
+/// ตารางที่ 1: รายการสินค้าที่ผู้ใช้กดถูกใจ (FavoriteProducts)
+/// ออกแบบสำหรับแคชข้อมูลสินค้าไว้แสดงผลแบบ Offline โดยไม่ต้องเรียก API ซ้ำ
+@DataClassName('FavoriteProduct')
+class FavoriteProducts extends Table {
+  // 1. รหัสสินค้าจากระบบ API/Backend (Primary Key ห้ามซ้ำ)
+  IntColumn get productId => integer()();
 
-4.<img width="536" height="771" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 39" src="https://github.com/user-attachments/assets/1797299f-4b0e-4275-b78d-c5b08d310dcc" />
+  // 2. ชื่อสินค้า สำหรับนำมาเรนเดอร์ใน UI หน้ารายการโปรดได้ทันที
+  TextColumn get title => text().withLength(min: 1, max: 255)();
 
-5.<img width="540" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 48" src="https://github.com/user-attachments/assets/b55e68ab-389c-456c-8401-3b80312cdb27" />
+  // 3. ราคาสินค้า ใช้ real() รองรับทศนิยม เช่น 199.50 บาท
+  RealColumn get price => real()();
 
-6.<img width="536" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 56" src="https://github.com/user-attachments/assets/c3ba7170-fe62-44aa-ba76-cf76c0bdf67f" />
+  // 4. URL รูปภาพหน้าปกสินค้า (nullable เผื่อสินค้าบางรายการยังไม่มีรูป)
+  TextColumn get imageUrl => text().nullable()();
 
-7.<img width="540" height="771" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 02" src="https://github.com/user-attachments/assets/0e4ed964-5ea2-411e-9ad5-baf0edb1c409" />
+  // 5. วัน-เวลาที่กดถูกใจ กำหนด default เป็นเวลาปัจจุบัน ใช้สำหรับ ORDER BY likedAt DESC
+  DateTimeColumn get likedAt => dateTime().withDefault(currentDateAndTime)();
 
-8.<img width="540" height="770" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 10" src="https://github.com/user-attachments/assets/628522c9-1c28-4198-a3a4-33b7263c447b" />
+  // กำหนดให้ productId เป็น Primary Key เพื่อป้องกันรายการซ้ำ
+  @override
+  Set<Column> get primaryKey => {productId};
+}
 
-9.<img width="540" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 16" src="https://github.com/user-attachments/assets/e8b4c303-5a95-4063-94ad-d978d78e0a48" />
+import 'package:drift/drift.dart';
 
-10.<img width="537" height="768" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 24" src="https://github.com/user-attachments/assets/1e4b9039-8a47-4c0a-84c7-14d34472273a" />
+/// ตารางที่ 2: ร่างประกาศขายสินค้าที่ AI ช่วยแนะนำ (ListingDrafts)
+/// ออกแบบสำหรับบันทึกข้อมูลแบบ Local Persistence ไม่ให้หายเมื่อปิดแอป
+@DataClassName('ListingDraft')
+class ListingDrafts extends Table {
+  // 1. รหัส Primary Key ของร่างในเครื่อง รันเลขอัตโนมัติ (1, 2, 3, ...)
+  IntColumn get id => integer().autoIncrement()();
 
-11.<img width="547" height="772" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 34" src="https://github.com/user-attachments/assets/49bc83a2-f723-4b42-ad35-2c5f3e3147b1" />
+  // 2. ชื่อประกาศขายสินค้าที่ AI ช่วยตั้ง หรือผู้ใช้แก้ไขเพิ่มเติม
+  TextColumn get title => text().nullable()();
 
-12.<img width="541" height="770" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 42" src="https://github.com/user-attachments/assets/d238824d-c76a-48b4-a699-e5d3e8568996" />
+  // 3. หมวดหมู่สินค้า เช่น 'หนังสือ/ชีทเรียน', 'อุปกรณ์ไอที', 'เสื้อผ้า'
+  TextColumn get category => text().nullable()();
 
-13.<img width="545" height="770" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 49" src="https://github.com/user-attachments/assets/98b15681-f461-43fa-adea-13f40491a7b0" />
+  // 4. คำบรรยายรายละเอียดสินค้าที่ AI ช่วยร่างจากภาพ
+  TextColumn get description => text().nullable()();
+
+  // 5. Path ของไฟล์รูปภาพในเครื่อง (Local Storage Path เช่น /data/user/0/...)
+  TextColumn get imagePath => text().nullable()();
+
+  // 6. เวลาที่แก้ไขล่าสุด ใช้สำหรับจัดเรียงร่างที่เพิ่งแก้ไขขึ้นมาบนสุด
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+
+  // 7. เวลาที่ร่างถูกสร้างขึ้นครั้งแรก
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
 
 
-14.<img width="537" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 55" src="https://github.com/user-attachments/assets/e24dbbac-f4a2-4f14-a609-cabfd390264c" />
+import 'dart:io';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+
+part 'app_database.g.dart';
+
+// กำหนดตารางทั้งหมดใน Database
+@DriftDatabase(tables: [FavoriteProducts, ListingDrafts])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase() : super(_openConnection());
+
+  @override
+  int get schemaVersion => 1;
+
+  // ==========================================
+  // Queries สำหรับ FavoriteProducts (สินค้าที่ถูกใจ)
+  // ==========================================
+
+  /// ดึงรายการสินค้าโปรดทั้งหมด เรียงจากถูกใจล่าสุดไปเก่าสุด (DESC)
+  Stream<List<FavoriteProduct>> watchFavoritesSortedByRecent() {
+    return (select(favoriteProducts)
+          ..orderBy([(t) => OrderingTerm.desc(t.likedAt)]))
+        .watch();
+  }
+
+  /// บันทึกหรืออัปเดตการถูกใจ (ถ้ามีอยู่แล้วจะอัปเดตเวลา likedAt ล่าสุด)
+  Future<void> saveFavorite({
+    required int productId,
+    required String title,
+    required double price,
+    String? imageUrl,
+  }) {
+    return into(favoriteProducts).insertOnConflictUpdate(
+      FavoriteProductsCompanion(
+        productId: Value(productId),
+        title: Value(title),
+        price: Value(price),
+        imageUrl: Value(imageUrl),
+        likedAt: Value(DateTime.now()),
+      ),
+    );
+  }
+
+  /// ตรวจสอบว่าสินค้า id นี้ถูกใจอยู่หรือไม่
+  Future<bool> isProductFavorited(int productId) async {
+    final item = await (select(favoriteProducts)
+          ..where((t) => t.productId.equals(productId)))
+        .getSingleOrNull();
+    return item != null;
+  }
+
+  /// ลบสินค้าออกจากรายการถูกใจ (Unlike)
+  Future<int> removeFavorite(int productId) {
+    return (delete(favoriteProducts)
+          ..where((t) => t.productId.equals(productId)))
+        .go();
+  }
+
+  // ==========================================
+  // Queries สำหรับ ListingDrafts (ร่างประกาศจาก AI)
+  // ==========================================
+
+  /// ดึงร่างประกาศทั้งหมด เรียงตามเวลาแก้ไขล่าสุด (DESC)
+  Stream<List<ListingDraft>> watchDraftsSortedByUpdated() {
+    return (select(listingDrafts)
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
+        .watch();
+  }
+
+  /// บันทึกร่างประกาศใหม่ที่ AI สร้างขึ้น
+  Future<int> insertAiDraft({
+    String? title,
+    String? category,
+    String? description,
+    String? imagePath,
+  }) {
+    return into(listingDrafts).insert(
+      ListingDraftsCompanion.insert(
+        title: Value(title),
+        category: Value(category),
+        description: Value(description),
+        imagePath: Value(imagePath),
+      ),
+    );
+  }
+
+  /// บันทึกการแก้ไขร่างเดิม พร้อมอัปเดตเวลา updatedAt เป็นเวลาปัจจุบัน
+  Future<bool> updateExistingDraft({
+    required int id,
+    String? title,
+    String? category,
+    String? description,
+    String? imagePath,
+  }) {
+    return update(listingDrafts).replace(
+      ListingDraft(
+        id: id,
+        title: title,
+        category: category,
+        description: description,
+        imagePath: imagePath,
+        updatedAt: DateTime.now(),
+        createdAt: DateTime.now(), // หรือเก็บ createdAt เดิมไว้
+      ),
+    );
+  }
+
+  /// ลบร่างประกาศเมื่อโพสต์ขายสำเร็จ หรือเมื่อผู้ใช้กดยกเลิก
+  Future<int> deleteDraft(int id) {
+    return (delete(listingDrafts)..where((t) => t.id.equals(id))).go();
+  }
+}
+
+/// ฟังก์ชันเปิดการเชื่อมต่อฐานข้อมูล SQLite บนเครื่องผู้ใช้
+LazyDatabase _openConnection() {
+  return LazyDatabase(() async {
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'campus_marketplace.sqlite'));
+    return NativeDatabase.createInBackground(file);
+  });
+}
 
 
+ภาพ 
+<img width="1470" height="780" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 00" src="https://github.com/user-attachments/assets/d924dc31-ae14-4815-bd3b-ba0e26b796ee" />
+<img width="1470" height="785" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 09" src="https://github.com/user-attachments/assets/8ac68b42-5c28-4f46-bdae-280e8a4fa512" />
+<img width="1470" height="785" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 09" src="https://github.com/user-attachments/assets/f68691a5-6621-4b0d-a753-74d50e16d62c" />
+<img width="1470" height="784" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 20" src="https://github.com/user-attachments/assets/da7d9830-c3f7-457c-bfa8-003a49d6494d" />
+<img width="1470" height="785" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 29" src="https://github.com/user-attachments/assets/1f94db84-9913-4b1e-ba2d-2053d9643261" />
+<img width="1470" height="785" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 39" src="https://github.com/user-attachments/assets/b800f5f5-e7b6-49a8-b0b0-933a33dda9c8" />
+<img width="1470" height="784" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 45 47" src="https://github.com/user-attachments/assets/2f2ce54b-bcc4-4256-92c8-f2859f881cba" />
 
 ### ขั้นตอนที่ 1.2: ตรวจสอบและเทียบกับหลักการในบทเรียน 🧠 คิดเอง
 
