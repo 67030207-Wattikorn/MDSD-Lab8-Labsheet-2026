@@ -345,7 +345,7 @@ dart run build_runner build --delete-conflicting-outputs
 
 สัปดาห์นี้ซับซ้อนกว่าเดิมเล็กน้อย เพราะ `main.dart` ต้องสร้าง `AppDatabase` ขึ้นมาหนึ่งอินสแตนซ์ แล้วส่งต่อให้ Repository **สองตัว** (Favorites และ Draft) ที่จะสร้างในส่วนที่ 4-5 ก่อนส่งเข้า `MainScaffold` อีกที ตรวจสอบตามโครงนี้แล้วเติมส่วนที่ยังไม่มี (Repository ทั้งสองตัวจะสร้างจริงในส่วนถัดไป ตอนนี้แค่เตรียมจุดเชื่อมไว้ก่อน)
 
-```
+```   
 ในฟังก์ชัน main():
     สร้าง AppDatabase() ขึ้นมา 1 ตัว เก็บไว้ในตัวแปร db
 
@@ -365,9 +365,11 @@ dart run build_runner build --delete-conflicting-outputs
 
 capture หน้าจอผลลัพธ์คำสั่ง `dart run build_runner build` จากขั้นตอนที่ 3.2 ที่แสดงว่าสร้างไฟล์สำเร็จ (ไม่มี Error เรื่อง Class ชื่อซ้ำ) จากนั้นเปิดไฟล์ main.dart ที่แก้ตามขั้นตอนที่ 3.3 โดย ยังไม่ต้องรันแอปในจุดนี้ เพราะ VS Code จะขีดเส้นสีแดงใต้ FavoritesRepositoryDrift และ ListingDraftRepositoryDrift (ยังไม่มี Class จริง จะเขียน Class นี้ในส่วนที่ 4-5) และถ้าสั่งรันตอนนี้แอปจะ Error ทันทีเพราะคอมไพล์ไม่ผ่าน ถือเป็นเรื่องปกติ — จะกลับมารันแอปได้จริงอีกครั้งหลังทำ Checkpoint 4.1 และ 5.1 เสร็จ
 
-```text
 บันทึกผลลัพธ์ที่นี่
-```
+<img width="1466" height="952" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 22 26 31" src="https://github.com/user-attachments/assets/1dbd1a13-9899-42b9-bf90-05134e86d8cd" />
+
+<img width="1464" height="945" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 22 28 02" src="https://github.com/user-attachments/assets/5cbf3b48-0364-4dab-8739-8714e3d7bccf" />
+
 
 ---
 
