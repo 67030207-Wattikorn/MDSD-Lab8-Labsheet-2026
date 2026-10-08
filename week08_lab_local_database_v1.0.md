@@ -55,9 +55,36 @@
 
 บันทึกโค้ดที่ Gemini ตอบกลับมาที่ด้านล่าง
 
-```text
 บันทึกผลลัพธ์ที่นี่
-```
+1.<img width="535" height="765" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 30 34" src="https://github.com/user-attachments/assets/3e1356aa-3655-45c5-8cf1-9637086b072a" />
+
+2.<img width="539" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 30 50" src="https://github.com/user-attachments/assets/8046f622-64c6-49cc-98e3-38506415d44b" />
+
+3.<img width="541" height="768" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 18" src="https://github.com/user-attachments/assets/7a97d254-fc95-449b-bacd-f3309dc10564" />
+
+4.<img width="536" height="771" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 39" src="https://github.com/user-attachments/assets/1797299f-4b0e-4275-b78d-c5b08d310dcc" />
+
+5.<img width="540" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 48" src="https://github.com/user-attachments/assets/b55e68ab-389c-456c-8401-3b80312cdb27" />
+
+6.<img width="536" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 31 56" src="https://github.com/user-attachments/assets/c3ba7170-fe62-44aa-ba76-cf76c0bdf67f" />
+
+7.<img width="540" height="771" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 02" src="https://github.com/user-attachments/assets/0e4ed964-5ea2-411e-9ad5-baf0edb1c409" />
+
+8.<img width="540" height="770" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 10" src="https://github.com/user-attachments/assets/628522c9-1c28-4198-a3a4-33b7263c447b" />
+
+9.<img width="540" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 16" src="https://github.com/user-attachments/assets/e8b4c303-5a95-4063-94ad-d978d78e0a48" />
+
+10.<img width="537" height="768" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 24" src="https://github.com/user-attachments/assets/1e4b9039-8a47-4c0a-84c7-14d34472273a" />
+
+11.<img width="547" height="772" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 34" src="https://github.com/user-attachments/assets/49bc83a2-f723-4b42-ad35-2c5f3e3147b1" />
+
+12.<img width="541" height="770" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 42" src="https://github.com/user-attachments/assets/d238824d-c76a-48b4-a699-e5d3e8568996" />
+
+13.<img width="545" height="770" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 49" src="https://github.com/user-attachments/assets/98b15681-f461-43fa-adea-13f40491a7b0" />
+
+
+14.<img width="537" height="769" alt="ภาพถ่ายหน้าจอ 2569-10-08 เวลา 20 32 55" src="https://github.com/user-attachments/assets/e24dbbac-f4a2-4f14-a609-cabfd390264c" />
+
 
 
 ### ขั้นตอนที่ 1.2: ตรวจสอบและเทียบกับหลักการในบทเรียน 🧠 คิดเอง
